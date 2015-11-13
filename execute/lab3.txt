@@ -1,0 +1,211 @@
+User Text Segment [00400000]..[00440000]
+[00400000] 8fa40000  lw $4, 0($29)            ; 183: lw $a0 0($sp) # argc 
+[00400004] 27a50004  addiu $5, $29, 4         ; 184: addiu $a1 $sp 4 # argv 
+[00400008] 24a60004  addiu $6, $5, 4          ; 185: addiu $a2 $a1 4 # envp 
+[0040000c] 00041080  sll $2, $4, 2            ; 186: sll $v0 $a0 2 
+[00400010] 00c23021  addu $6, $6, $2          ; 187: addu $a2 $a2 $v0 
+[00400014] 0c100009  jal 0x00400024 [main]    ; 188: jal main 
+[00400018] 00000000  nop                      ; 189: nop 
+[0040001c] 3402000a  ori $2, $0, 10           ; 191: li $v0 10 
+[00400020] 0000000c  syscall                  ; 192: syscall # syscall 10 (exit) 
+[00400024] 27bdffe8  addiu $29, $29, -24      ; 9: addiu $sp,$sp,-24 #reserve space on the stack 
+[00400028] afbf0014  sw $31, 20($29)          ; 10: sw $ra,20($sp) # save previous $ra 
+[0040002c] afbe0010  sw $30, 16($29)          ; 11: sw $fp,16($sp) # save previous $fp 
+[00400030] 001df021  addu $30, $0, $29        ; 12: move $fp,$sp # set $fp location 
+[00400034] 34040007  ori $4, $0, 7            ; 13: li $a0,7 # initialize 1st arg for call 
+[00400038] 34050008  ori $5, $0, 8            ; 14: li $a1,8 # initialize 2nd arg for 
+[0040003c] 0c100017  jal 0x0040005c [comp]    ; 15: jal comp # call comp procedure 
+[00400040] 001ee821  addu $29, $0, $30        ; 16: move $sp,$fp # reset $sp 
+[00400044] 8fbf0014  lw $31, 20($29)          ; 17: lw $ra,20($sp) # restore registers saved in 
+[00400048] 8fbe0010  lw $30, 16($29)          ; 18: lw $fp,16($sp) 
+[0040004c] 27bd0020  addiu $29, $29, 32       ; 19: addiu $sp,$sp,32 # restore the stack pointer (pop) 
+[00400050] 03e00008  jr $31                   ; 20: j $ra # return to caller 
+[00400054] 3402000a  ori $2, $0, 10           ; 22: li $v0, 10 
+[00400058] 0000000c  syscall                  ; 23: syscall # exit 
+[0040005c] 27bdffd0  addiu $29, $29, -48      ; 34: addiu $sp,$sp,-48 # reserve space on the stack 
+[00400060] afbf002c  sw $31, 44($29)          ; 35: sw $ra,44($sp) # save previous $ra 
+[00400064] afbe0028  sw $30, 40($29)          ; 36: sw $fp,40($sp) # save previous $fp 
+[00400068] afb10024  sw $17, 36($29)          ; 37: sw $s1,36($sp) # save $s0, $s1 before using them 
+[0040006c] afb00020  sw $16, 32($29)          ; 38: sw $s0,32($sp) 
+[00400070] 001df021  addu $30, $0, $29        ; 39: move $fp,$sp # set $fp location 
+[00400074] afc40030  sw $4, 48($30)           ; 40: sw $a0,48($fp) # save $a0, $a1 (2 arguments m, n of comp) in caller's frame 
+[00400078] afc50034  sw $5, 52($30)           ; 41: sw $a1,52($fp) 
+[0040007c] 34020001  ori $2, $0, 1            ; 42: li $v0,1 # store local variables a, b in 
+[00400080] afc20018  sw $2, 24($30)           ; 43: sw $v0,24($fp) 
+[00400084] 34020002  ori $2, $0, 2            ; 44: li $v0,2 
+[00400088] afc2001c  sw $2, 28($30)           ; 45: sw $v0,28($fp) 
+[0040008c] 34100005  ori $16, $0, 5           ; 46: li $s0,5 # register variables x, y stored in $s0, $s1 
+[00400090] 34110006  ori $17, $0, 6           ; 47: li $s1,6 
+[00400094] afb00010  sw $16, 16($29)          ; 48: sw $s0,16($sp) # pass arguments 5, 6 (x, y) via 
+[00400098] afb10014  sw $17, 20($29)          ; 49: sw $s1,20($sp) 
+[0040009c] 8fc40018  lw $4, 24($30)           ; 50: lw $a0,24($fp) # put 1st 4 (a,b, m, n) arguments 
+[004000a0] 8fc5001c  lw $5, 28($30)           ; 51: lw $a1,28($fp) 
+[004000a4] 8fc60030  lw $6, 48($30)           ; 52: lw $a2,48($fp) 
+[004000a8] 8fc70034  lw $7, 52($30)           ; 53: lw $a3,52($fp) 
+[004000ac] 0c000000  jal 0x00000000 [args6]   ; 54: jal args6 # call args6 procedure 
+[004000b0] 02111021  addu $2, $16, $17        ; 55: addu $v0,$s0,$s1 # put the sum of x+y into return 
+[004000b4] 001ee821  addu $29, $0, $30        ; 56: move $sp,$fp # set the stack pointer back to 
+[004000b8] 8fbf002c  lw $31, 44($29)          ; 57: lw $ra,44($sp) # restore registers saved in 
+[004000bc] 8fbe0028  lw $30, 40($29)          ; 58: lw $fp,40($sp) 
+[004000c0] 8fb10024  lw $17, 36($29)          ; 59: lw $s1,36($sp) 
+[004000c4] 8fb00020  lw $16, 32($29)          ; 60: lw $s0,32($sp) 
+[004000c8] 27bd0030  addiu $29, $29, 48       ; 61: addiu $sp,$sp,48 # restore the stack pointer (pop) 
+[004000cc] 03e00008  jr $31                   ; 62: j $ra # return to the caller 
+[004000d0] 27bdfff8  addiu $29, $29, -8       ; 70: addiu $sp,$sp,-8 # reserve space on the stack 
+[004000d4] afbe0000  sw $30, 0($29)           ; 71: sw $fp,0($sp) # save previous $fp 
+[004000d8] 001df021  addu $30, $0, $29        ; 72: move $fp,$sp # set $fp location 
+[004000dc] afc40008  sw $4, 8($30)            ; 73: sw $a0,8($fp) # back up 1st 4 arguments into 
+[004000e0] afc5000c  sw $5, 12($30)           ; 74: sw $a1,12($fp) 
+[004000e4] afc60010  sw $6, 16($30)           ; 75: sw $a2,16($fp) 
+[004000e8] afc70014  sw $7, 20($30)           ; 76: sw $a3,20($fp) 
+[004000ec] 8fc30008  lw $3, 8($30)            ; 77: lw $v1,8($fp) # load and add the 1st 4 args and 
+[004000f0] 8fc2000c  lw $2, 12($30)           ; 78: lw $v0,12($fp) 
+[004000f4] 00621021  addu $2, $3, $2          ; 79: addu $v0,$v1,$v0 
+[004000f8] 8fc30010  lw $3, 16($30)           ; 80: lw $v1,16($fp) 
+[004000fc] 00431021  addu $2, $2, $3          ; 81: addu $v0,$v0,$v1 
+[00400100] 8fc30014  lw $3, 20($30)           ; 82: lw $v1,20($fp) 
+[00400104] 00431021  addu $2, $2, $3          ; 83: addu $v0,$v0,$v1 
+[00400108] 8fc30018  lw $3, 24($30)           ; 84: lw $v1,24($fp) # load 5th argument from 24($fp) and add to $v0 
+[0040010c] 00431021  addu $2, $2, $3          ; 85: addu $v0,$v0,$v1 
+[00400110] 8fc3001c  lw $3, 28($30)           ; 86: lw $v1,28($fp) # load 6th argument from 28($fp) and add to $v0 
+[00400114] 00431021  addu $2, $2, $3          ; 87: addu $v0,$v0,$v1 
+[00400118] 001ee821  addu $29, $0, $30        ; 88: move $sp,$fp # reset $sp to $fp 
+[0040011c] 8fbe0000  lw $30, 0($29)           ; 89: lw $fp,0($sp) # restore old value of $fp 
+[00400120] 27bd0008  addiu $29, $29, 8        ; 90: addiu $sp,$sp,8 # restore the stack pointer (pop) 
+[00400124] 03e00008  jr $31                   ; 91: j $ra # return to caller 
+
+Kernel Text Segment [80000000]..[80010000]
+[80000180] 0001d821  addu $27, $0, $1         ; 90: move $k1 $at # Save $at 
+[80000184] 3c019000  lui $1, -28672           ; 92: sw $v0 s1 # Not re-entrant and we can't trust $sp 
+[80000188] ac220200  sw $2, 512($1)           
+[8000018c] 3c019000  lui $1, -28672           ; 93: sw $a0 s2 # But we need to use these registers 
+[80000190] ac240204  sw $4, 516($1)           
+[80000194] 401a6800  mfc0 $26, $13            ; 95: mfc0 $k0 $13 # Cause register 
+[80000198] 001a2082  srl $4, $26, 2           ; 96: srl $a0 $k0 2 # Extract ExcCode Field 
+[8000019c] 3084001f  andi $4, $4, 31          ; 97: andi $a0 $a0 0x1f 
+[800001a0] 34020004  ori $2, $0, 4            ; 101: li $v0 4 # syscall 4 (print_str) 
+[800001a4] 3c049000  lui $4, -28672 [__m1_]   ; 102: la $a0 __m1_ 
+[800001a8] 0000000c  syscall                  ; 103: syscall 
+[800001ac] 34020001  ori $2, $0, 1            ; 105: li $v0 1 # syscall 1 (print_int) 
+[800001b0] 001a2082  srl $4, $26, 2           ; 106: srl $a0 $k0 2 # Extract ExcCode Field 
+[800001b4] 3084001f  andi $4, $4, 31          ; 107: andi $a0 $a0 0x1f 
+[800001b8] 0000000c  syscall                  ; 108: syscall 
+[800001bc] 34020004  ori $2, $0, 4            ; 110: li $v0 4 # syscall 4 (print_str) 
+[800001c0] 3344003c  andi $4, $26, 60         ; 111: andi $a0 $k0 0x3c 
+[800001c4] 3c019000  lui $1, -28672           ; 112: lw $a0 __excp($a0) 
+[800001c8] 00240821  addu $1, $1, $4          
+[800001cc] 8c240180  lw $4, 384($1)           
+[800001d0] 00000000  nop                      ; 113: nop 
+[800001d4] 0000000c  syscall                  ; 114: syscall 
+[800001d8] 34010018  ori $1, $0, 24           ; 116: bne $k0 0x18 ok_pc # Bad PC exception requires special checks 
+[800001dc] 143a0008  bne $1, $26, 32 [ok_pc-0x800001dc] 
+[800001e0] 00000000  nop                      ; 117: nop 
+[800001e4] 40047000  mfc0 $4, $14             ; 119: mfc0 $a0 $14 # EPC 
+[800001e8] 30840003  andi $4, $4, 3           ; 120: andi $a0 $a0 0x3 # Is EPC word-aligned? 
+[800001ec] 10040004  beq $0, $4, 16 [ok_pc-0x800001ec]
+[800001f0] 00000000  nop                      ; 122: nop 
+[800001f4] 3402000a  ori $2, $0, 10           ; 124: li $v0 10 # Exit on really bad PC 
+[800001f8] 0000000c  syscall                  ; 125: syscall 
+[800001fc] 34020004  ori $2, $0, 4            ; 128: li $v0 4 # syscall 4 (print_str) 
+[80000200] 3c019000  lui $1, -28672 [__m2_]   ; 129: la $a0 __m2_ 
+[80000204] 3424000d  ori $4, $1, 13 [__m2_]   
+[80000208] 0000000c  syscall                  ; 130: syscall 
+[8000020c] 001a2082  srl $4, $26, 2           ; 132: srl $a0 $k0 2 # Extract ExcCode Field 
+[80000210] 3084001f  andi $4, $4, 31          ; 133: andi $a0 $a0 0x1f 
+[80000214] 14040002  bne $0, $4, 8 [ret-0x80000214]; 134: bne $a0 0 ret # 0 means exception was an interrupt 
+[80000218] 00000000  nop                      ; 135: nop 
+[8000021c] 401a7000  mfc0 $26, $14            ; 145: mfc0 $k0 $14 # Bump EPC register 
+[80000220] 275a0004  addiu $26, $26, 4        ; 146: addiu $k0 $k0 4 # Skip faulting instruction 
+[80000224] 409a7000  mtc0 $26, $14            ; 148: mtc0 $k0 $14 
+[80000228] 3c019000  lui $1, -28672           ; 153: lw $v0 s1 # Restore other registers 
+[8000022c] 8c220200  lw $2, 512($1)           
+[80000230] 3c019000  lui $1, -28672           ; 154: lw $a0 s2 
+[80000234] 8c240204  lw $4, 516($1)           
+[80000238] 001b0821  addu $1, $0, $27         ; 157: move $at $k1 # Restore $at 
+[8000023c] 40806800  mtc0 $0, $13             ; 160: mtc0 $0 $13 # Clear Cause register 
+[80000240] 401a6000  mfc0 $26, $12            ; 162: mfc0 $k0 $12 # Set Status register 
+[80000244] 375a0001  ori $26, $26, 1          ; 163: ori $k0 0x1 # Interrupts enabled 
+[80000248] 409a6000  mtc0 $26, $12            ; 164: mtc0 $k0 $12 
+[8000024c] 42000018  eret                     ; 167: eret 
+
+
+User data segment [10000000]..[10040000]
+[10000000]..[1003ffff]  00000000
+
+
+User Stack [7ffffdb4]..[80000000]
+[7ffffdb4]    00000001  7ffffdfc  00000000              . . . . . . . . . . . . 
+[7ffffdc0]    7fffffc7  7fffffa1  7fffff8b  7fffff7b    . . . . . . . . . . . . { . . . 
+[7ffffdd0]    7fffff2f  7ffffeed  7ffffeca  7ffffeb8    / . . . . . . . . . . . . . . . 
+[7ffffde0]    7ffffe6d  7ffffe45  7ffffe36  7ffffe28    m . . . E . . . 6 . . . ( . . . 
+[7ffffdf0]    00000000  00000000  00000000  6573552f    . . . . . . . . . . . . / U s e 
+[7ffffe00]    432f7372  4a79726f  61726162  646f632f    r s / C o r y J b a r a / c o d 
+[7ffffe10]    696d2f65  6d697370  6578652f  65747563    e / m i p s i m / e x e c u t e 
+[7ffffe20]    62616c2f  00732e33  5f435058  47414c46    / l a b 3 . s . X P C _ F L A G 
+[7ffffe30]    78303d53  53550030  433d5245  4a79726f    S = 0 x 0 . U S E R = C o r y J 
+[7ffffe40]    61726162  43505800  5245535f  45434956    b a r a . X P C _ S E R V I C E 
+[7ffffe50]    4d414e5f  6f633d45  616c2e6d  2e737572    _ N A M E = c o m . l a r u s . 
+[7ffffe60]    70737471  362e6d69  32333830  53494400    q t s p i m . 6 0 8 3 2 . D I S 
+[7ffffe70]    59414c50  72702f3d  74617669  6d742f65    P L A Y = / p r i v a t e / t m 
+[7ffffe80]    6f632f70  70612e6d  2e656c70  6e75616c    p / c o m . a p p l e . l a u n 
+[7ffffe90]    2e646863  4f543539  796e3048  6f2f4f30    c h d . 9 5 T O H 0 n y 0 O / o 
+[7ffffea0]    6d2e6772  736f6361  67726f66  71782e65    r g . m a c o s f o r g e . x q 
+[7ffffeb0]    74726175  00303a7a  4e474f4c  3d454d41    u a r t z : 0 . L O G N A M E = 
+[7ffffec0]    79726f43  7261624a  41500061  2f3d4854    C o r y J b a r a . P A T H = / 
+[7ffffed0]    2f727375  3a6e6962  6e69622f  73752f3a    u s r / b i n : / b i n : / u s 
+[7ffffee0]    62732f72  2f3a6e69  6e696273  48535300    r / s b i n : / s b i n . S S H 
+[7ffffef0]    5455415f  4f535f48  2f3d4b43  76697270    _ A U T H _ S O C K = / p r i v 
+[7fffff00]    2f657461  2f706d74  2e6d6f63  6c707061    a t e / t m p / c o m . a p p l 
+[7fffff10]    616c2e65  68636e75  56672e64  69646745    e . l a u n c h d . g V E g d i 
+[7fffff20]    6b6e565a  73694c2f  656e6574  41007372    Z V n k / L i s t e n e r s . A 
+[7fffff30]    656c7070  6275505f  5f627553  6b636f53    p p l e _ P u b S u b _ S o c k 
+[7fffff40]    525f7465  65646e65  702f3d72  61766972    e t _ R e n d e r = / p r i v a 
+[7fffff50]    742f6574  632f706d  612e6d6f  656c7070    t e / t m p / c o m . a p p l e 
+[7fffff60]    75616c2e  6468636e  587a352e  6950747a    . l a u n c h d . 5 z X z t P i 
+[7fffff70]    2f4a3730  646e6552  53007265  4c4c4548    0 7 J / R e n d e r . S H E L L 
+[7fffff80]    69622f3d  61622f6e  48006873  3d454d4f    = / b i n / b a s h . H O M E = 
+[7fffff90]    6573552f  432f7372  4a79726f  61726162    / U s e r s / C o r y J b a r a 
+[7fffffa0]    435f5f00  53555f46  545f5245  5f545845    . _ _ C F _ U S E R _ T E X T _ 
+[7fffffb0]    4f434e45  474e4944  3178303d  303a3546    E N C O D I N G = 0 x 1 F 5 : 0 
+[7fffffc0]    303a3078  54003078  4944504d  762f3d52    x 0 : 0 x 0 . T M P D I R = / v 
+[7fffffd0]    662f7261  65646c6f  312f7372  35722f38    a r / f o l d e r s / 1 8 / r 5 
+[7fffffe0]    31643438  72327838  6636317a  7735706c    8 4 d 1 8 x 2 r z 1 6 f l p 5 w 
+[7ffffff0]    6e353568  3030686a  6e673030  002f542f    h 5 5 n j h 0 0 0 0 g n / T / . 
+
+
+Kernel data segment [90000000]..[90010000]
+[90000000]    78452020  74706563  206e6f69  636f2000        E x c e p t i o n   .   o c 
+[90000010]    72727563  61206465  6920646e  726f6e67    c u r r e d   a n d   i g n o r 
+[90000020]    000a6465  495b2020  7265746e  74707572    e d . .     [ I n t e r r u p t 
+[90000030]    2000205d  4c545b20  20005d42  4c545b20    ]   .     [ T L B ] .     [ T L 
+[90000040]    20005d42  4c545b20  20005d42  64415b20    B ] .     [ T L B ] .     [ A d 
+[90000050]    73657264  72652073  20726f72  69206e69    d r e s s   e r r o r   i n   i 
+[90000060]    2f74736e  61746164  74656620  205d6863    n s t / d a t a   f e t c h ]   
+[90000070]    5b202000  72646441  20737365  6f727265    .     [ A d d r e s s   e r r o 
+[90000080]    6e692072  6f747320  205d6572  5b202000    r   i n   s t o r e ]   .     [ 
+[90000090]    20646142  74736e69  74637572  206e6f69    B a d   i n s t r u c t i o n   
+[900000a0]    72646461  5d737365  20200020  6461425b    a d d r e s s ]   .     [ B a d 
+[900000b0]    74616420  64612061  73657264  00205d73      d a t a   a d d r e s s ]   . 
+[900000c0]    455b2020  726f7272  206e6920  63737973        [ E r r o r   i n   s y s c 
+[900000d0]    5d6c6c61  20200020  6572425b  6f706b61    a l l ]   .     [ B r e a k p o 
+[900000e0]    5d746e69  20200020  7365525b  65767265    i n t ]   .     [ R e s e r v e 
+[900000f0]    6e692064  75727473  6f697463  00205d6e    d   i n s t r u c t i o n ]   . 
+[90000100]    5b202000  74697241  74656d68  6f206369    .     [ A r i t h m e t i c   o 
+[90000110]    66726576  5d776f6c  20200020  6172545b    v e r f l o w ]   .     [ T r a 
+[90000120]    00205d70  5b202000  616f6c46  676e6974    p ]   . .     [ F l o a t i n g 
+[90000130]    696f7020  205d746e  20000000  6f435b20      p o i n t ]   . . .     [ C o 
+[90000140]    636f7270  005d3220  20000000  444d5b20    p r o c   2 ] . . . .     [ M D 
+[90000150]    005d584d  575b2020  68637461  2020005d    M X ] .     [ W a t c h ] .     
+[90000160]    63614d5b  656e6968  65686320  005d6b63    [ M a c h i n e   c h e c k ] . 
+[90000170]    00000000  5b202000  68636143  00005d65    . . . . .     [ C a c h e ] . . 
+[90000180]    90000024  90000033  9000003b  90000043    $ . . . 3 . . . ; . . . C . . . 
+[90000190]    9000004b  90000071  9000008d  900000aa    K . . . q . . . . . . . . . . . 
+[900001a0]    900000c0  900000d6  900000e6  90000100    . . . . . . . . . . . . . . . . 
+[900001b0]    90000101  9000011a  90000124  90000125    . . . . . . . . $ . . . % . . . 
+[900001c0]    90000139  9000013a  9000013b  90000148    9 . . . : . . . ; . . . H . . . 
+[900001d0]    90000149  9000014a  9000014b  90000154    I . . . J . . . K . . . T . . . 
+[900001e0]    9000015e  90000170  90000171  90000172    ^ . . . p . . . q . . . r . . . 
+[900001f0]    90000173  90000174  90000175  9000017f    s . . . t . . . u . . . . . . . 
+[90000200]..[9000ffff]  00000000
+
+
