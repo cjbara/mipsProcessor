@@ -132,7 +132,8 @@ uint8_t* Memory::getMemoryPtr(unsigned addr) {
   } else if ( addr >= stackBase && addr <= stackBound ) {
     return stackMemory + addr - stackBase;
   } else {
-    assert(false && "memory access out of range");
+	cout << "ADDR: " << addr << endl;
+	assert(false);
   }
 }
 

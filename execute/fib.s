@@ -1,3 +1,6 @@
+# Data declarations go in this section.
+.data
+A: .space 64
 .text
 .globl main
 main:
@@ -9,6 +12,7 @@ li $t3, 1; # $t3 = 1
 sw $t3, 4($t2) # A[1] = $t3
 li $t0, 2 # i: $t0 = 2
 j loop_condition
+
 loop_body:
 la $t2, A # $t2 = &A
 addi $t3, $t0, -2 # $t3 = i - 2
@@ -28,7 +32,7 @@ addi $t0, $t0, 1 # ++i
 loop_condition:
 slt $t6, $t0, $t1 # $t6 = (i < length)
 bne $t6, $0, loop_body # if (i < length) branch to loop body
-# Done, terminate program.
+
 li $v0, 10
 syscall # exit
 .end main
